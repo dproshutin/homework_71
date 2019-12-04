@@ -16,7 +16,7 @@ const reducer = (state = initialState, action) => {
         case ITEMS_REQUEST:
             return {...state, loading: true};
         case ITEMS_SUCCESS:
-            return {...state, products: action.items,  loading: false};
+            return {...state, items: action.items,  loading: false};
         case ITEMS_FAILURE:
             return {
                 ...state,

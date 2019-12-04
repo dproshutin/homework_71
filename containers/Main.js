@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {StyleSheet} from "react-native";
+import {StyleSheet, FlatList, Text} from "react-native";
 import {connect} from "react-redux";
 import {onInitItems} from "../store/actions";
+import PlaceItem from "../components/PlaceItem";
 
 class Main extends Component {
     componentDidMount() {
@@ -10,7 +11,17 @@ class Main extends Component {
 
     render() {
         return (
-            <div>Hello World</div>
+            <FlatList
+                style={styles.list}
+                data={this.props.items}
+                renderItem={(info) => {
+                    console.log(info);
+                    return <PlaceItem
+                        place={info.item}
+                    />
+                }}
+                keyExtractor={(item) => item.id}
+            />
         );
     }
 }
@@ -27,7 +38,7 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps) (Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Main);
 
 const styles = StyleSheet.create({
     container: {
@@ -36,4 +47,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    list: {
+        marginTop: 10
+    }
 });
