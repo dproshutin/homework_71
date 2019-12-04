@@ -1,10 +1,12 @@
 import React from 'react';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
+import thunkMiddleware from "redux-thunk";
 import {AppRegistry} from 'react-native';
 import reducer from './store/reducer';
 import Main from "./containers/Main";
-const store = createStore(reducer);
+
+const store = createStore(reducer, applyMiddleware(thunkMiddleware));
 
 const Application = () => (
     <Provider store={store}>
