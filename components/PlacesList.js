@@ -16,7 +16,7 @@ export default function PlacesList(props) {
                   initialNumToRender={8}
                   maxToRenderPerBatch={9}
                   onEndReachedThreshhold={0.4}
-                    // onEndReached={props.load}
+                    onEndReached={props.load}
                   keyExtractor={(item) => item.id}
         />
     );

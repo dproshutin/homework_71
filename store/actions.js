@@ -41,7 +41,6 @@ export const loadNextItems = () => {
     return (dispatch, getState) => {
         dispatch(itemsRequest());
         const str = getState().after;
-        console.log("str", str);
         axios.get("pics.json?count=25&after=" + str).then(response => {
             const result = response.data;
             const after = result.data.after;
