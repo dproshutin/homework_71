@@ -4,7 +4,7 @@ import PlaceItem from "./PlaceItem";
 
 export default function PlacesList(props) {
     return (
-        <FlatList style={{flex: 5, width: "100%"}}
+        <FlatList style={{marginTop: 10}}
                   data={props.items}
                   renderItem={(info) => {
                       return <PlaceItem

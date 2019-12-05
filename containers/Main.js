@@ -19,7 +19,6 @@ class Main extends Component {
             <View style={styles.container}>
                 {spinner}
                 <PlacesList
-                    style={styles.list}
                     items={this.props.items}
                     load={this.props.loadNextItems}
                 />
@@ -51,9 +50,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    list: {
-        marginTop: 10
     },
     containerForSpinner: {
         flex: 1,
