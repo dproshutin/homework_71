@@ -5,8 +5,8 @@ export const itemsRequest = () => {
     return {type: ITEMS_REQUEST};
 };
 
-export const itemsSuccess = (items) => {
-    return {type: ITEMS_SUCCESS, items};
+export const itemsSuccess = (items, after) => {
+    return {type: ITEMS_SUCCESS, items, after};
 };
 
 export const itemsFailure = error => {
@@ -18,6 +18,7 @@ export const onInitItems = () => {
         dispatch(itemsRequest());
         axios.get("pics.json").then(response => {
             const result = response.data;
+            const after = result.data.after;
             const children = result.data.children;
             let items = [];
             if (children.length > 0) {
@@ -29,7 +30,33 @@ export const onInitItems = () => {
                     });
                 });
             }
-            dispatch(itemsSuccess(items));
+            dispatch(itemsSuccess(items, after));
+        }, err => {
+            dispatch(itemsFailure(err));
+        });
+    };
+};
+
+export const loadNextItems = () => {
+    return (dispatch, getState) => {
+        dispatch(itemsRequest());
+        const str = getState().after;
+        console.log("str", str);
+        axios.get("pics.json?count=25&after=" + str).then(response => {
+            const result = response.data;
+            const after = result.data.after;
+            const children = result.data.children;
+            let items = [];
+            if (children.length > 0) {
+                children.forEach(item => {
+                    items.push({
+                        id: item.data.id,
+                        thumbnail: item.data.thumbnail,
+                        title: item.data.title,
+                    });
+                });
+            }
+            dispatch(itemsSuccess(items, after));
         }, err => {
             dispatch(itemsFailure(err));
         });

@@ -7,8 +7,8 @@ import {
 const initialState = {
     items: [],
     loading: false,
-    error: null
-
+    error: null,
+    after: ""
 };
 
 const reducer = (state = initialState, action) => {
@@ -16,7 +16,11 @@ const reducer = (state = initialState, action) => {
         case ITEMS_REQUEST:
             return {...state, loading: true};
         case ITEMS_SUCCESS:
-            return {...state, items: action.items,  loading: false};
+            if (state.after !== action.after) {
+                const newItems = (state.items.length === 0) ? action.items : state.items.concat(action.items);
+                return {...state, items: [...newItems],  after: action.after, loading: false};
+            }
+            return state;
         case ITEMS_FAILURE:
             return {
                 ...state,

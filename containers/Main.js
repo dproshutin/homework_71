@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, FlatList, Text} from "react-native";
+import {StyleSheet, FlatList, Text, ActivityIndicator, View} from "react-native";
 import {connect} from "react-redux";
-import {onInitItems} from "../store/actions";
+import {onInitItems, loadNextItems} from "../store/actions";
 import PlaceItem from "../components/PlaceItem";
+import PlacesList from "../components/PlacesList";
 
 class Main extends Component {
     componentDidMount() {
@@ -10,31 +11,35 @@ class Main extends Component {
     }
 
     render() {
+        let spinner = (this.props.loading) ?
+            <View style={[styles.containerForSpinner, styles.horizontal]}>
+                <ActivityIndicator size="large" color="#0000ff"/>
+            </View> : null;
         return (
-            <FlatList
-                style={styles.list}
-                data={this.props.items}
-                renderItem={(info) => {
-                    console.log(info);
-                    return <PlaceItem
-                        place={info.item}
-                    />
-                }}
-                keyExtractor={(item) => item.id}
-            />
+            <View style={styles.container}>
+                {spinner}
+                <PlacesList
+                    style={styles.list}
+                    items={this.props.items}
+                    load={this.props.loadNextItems}
+                />
+            </View>
         );
     }
 }
 
 const mapStateToProps = state => {
     return {
-        items: state.items
+        items: state.items,
+        loading: state.loading,
+        after: state.after
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onInitItems: () => dispatch(onInitItems())
+        onInitItems: () => dispatch(onInitItems()),
+        loadNextItems: () => dispatch(loadNextItems())
     };
 };
 
@@ -49,5 +54,14 @@ const styles = StyleSheet.create({
     },
     list: {
         marginTop: 10
+    },
+    containerForSpinner: {
+        flex: 1,
+        justifyContent: 'center'
+    },
+    horizontal: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10
     }
 });
